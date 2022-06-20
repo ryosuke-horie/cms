@@ -18,7 +18,10 @@ use Illuminate\Http\Request;
 * 本の一覧表示(books.blade.php)
 */
 Route::get('/', function () {
-    return view('books');
+    $books = Book::orderBy('created_at', 'asc')->get();
+    return view('books', [
+        'books' => $books
+    ]);
 });
 
 /**
