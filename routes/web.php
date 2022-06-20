@@ -22,8 +22,8 @@ Route::get('/', function () {
     return view('books', [
         'books' => $books
     ]);
+    //return view('books',compact('books')); //も同じ意味
 });
-
 /**
 * 本を追加 
 */

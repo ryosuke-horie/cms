@@ -54,6 +54,14 @@
 
                                 <!-- 本: 削除ボタン -->
                                 <td>
+                                    <form action="{{ url('book/'.$book->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        
+                                        <button type="submit" class="btn btn-danger">
+                                            削除
+                                        </button>
+                                    </form>
 
                                 </td>
                             </tr>
