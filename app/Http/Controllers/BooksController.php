@@ -10,6 +10,14 @@ use Auth;
 class BooksController extends Controller
 {
     /**
+     * 本ダッシュボード表示
+     */
+    public function index() {
+        $books = Book::orderBy('created_at', 'asc')->get();
+        return view('books',compact('books'));
+    }
+    
+    /**
      * 更新処理
      */
     public function update(Request $request){
