@@ -2,32 +2,37 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
-
-//使うClassを宣言:自分で追加
+//使うClassを宣言
 use App\Book;   //Bookモデルを使えるようにする
 use Validator;  //バリデーションを使えるようにする
 use Auth;       //認証モデルを使用する
 
 class BooksController extends Controller
 {
-    //本ダッシュボード表示
+    /**
+     * 本ダッシュボード表示 
+     */
     public function index() {
         $books = Book::orderBy('created_at', 'asc')->get();
         return view('books', [
             'books' => $books
         ]);
     }
-    
-    //更新画面
+
+    /**
+     * 更新画面 
+     */
     public function edit(Book $books) {
         return view('booksedit', [
             'book' => $books
         ]);
     }
-    
-    //更新
+
+    /**
+     * 更新処理
+     */
     public function update(Request $request) {
-        //バリデーション
+        //バリデーション
         $validator = Validator::make($request->all(), [
             'id' => 'required',
             'item_name' => 'required|min:3|max:255',
@@ -35,7 +40,7 @@ class BooksController extends Controller
             'item_amount' => 'required|max:6',
             'published' => 'required',
         ]); 
-        //バリデーション:エラー 
+        //バリデーション:エラー 
         if ($validator->fails()) {
             return redirect('/')
                 ->withInput()
@@ -51,17 +56,19 @@ class BooksController extends Controller
         $books->save();
         return redirect('/');
     }
-    
-    //登録
+
+    /**
+     * 登録処理
+     */
     public function store(Request $request) {
-        //バリデーション
+        //バリデーション
         $validator = Validator::make($request->all(), [
                 'item_name' => 'required|min:3|max:255',
                 'item_number' => 'required|min:1|max:3',
                 'item_amount' => 'required|max:6',
                 'published' => 'required',
         ]);
-        //バリデーション:エラー 
+        //バリデーション:エラー 
         if ($validator->fails()) {
                 return redirect('/')
                     ->withInput()
@@ -76,8 +83,10 @@ class BooksController extends Controller
         $books->save();
         return redirect('/');
     }
-        
-    //削除処理
+
+    /**
+     * 削除処理
+     */
     public function destroy(Book $book) {
         $book->delete();
         return redirect('/');
