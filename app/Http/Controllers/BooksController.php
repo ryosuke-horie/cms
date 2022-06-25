@@ -30,14 +30,12 @@ class BooksController extends Controller
     /**
      * 更新画面 
      */
-    public function edit(Book $books) {
-        $books = Book::where('user_id', Auth::user()->id)->find($book_id);
-
+    public function edit($book_id){
+        $books = Book::where('user_id',Auth::user()->id)->find($book_id);
         return view('booksedit', [
             'book' => $books
         ]);
     }
-
     /**
      * 更新処理
      */
