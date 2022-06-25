@@ -71,6 +71,14 @@ class BooksController extends Controller
      * 登録処理
      */
     public function store(Request $request) {
+        $file = $request->file('item_img'); //file取得
+        if( !empty($file) ){                //fileが空かチェック
+            $filename = $file->getClientOriginalName();   //ファイル名を取得
+            $move = $file->move('./upload/',$filename);  //ファイルを移動：パスが“./upload/”の場合もあるCloud9
+        }else{
+            $filename = "";
+        }
+
         //バリデーション
         $validator = Validator::make($request->all(), [
                 'item_name' => 'required|min:3|max:255',
@@ -90,6 +98,7 @@ class BooksController extends Controller
         $books->item_name = $request->item_name;
         $books->item_number = $request->item_number;
         $books->item_amount = $request->item_amount;
+        $books->item_img = $filename;
         $books->published = $request->published;
         $books->save();
         return redirect('/');
