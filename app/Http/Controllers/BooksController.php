@@ -21,7 +21,7 @@ class BooksController extends Controller
      * 本ダッシュボード表示 
      */
     public function index() {
-        $books = Book::orderBy('created_at', 'asc')->paginate(3);
+        $books = Book::where('user_id', Auth::user()->id)->orderBy('created_at', 'asc')->paginate(3);
         return view('books', [
             'books' => $books
         ]);
@@ -31,6 +31,8 @@ class BooksController extends Controller
      * 更新画面 
      */
     public function edit(Book $books) {
+        $books = Book::where('user_id', Auth::user()->id)->find($book_id);
+
         return view('booksedit', [
             'book' => $books
         ]);
@@ -56,7 +58,7 @@ class BooksController extends Controller
         }
         
         //データ更新
-        $books = Book::find($request->id);
+        $books = Book::where('user_id', Auth::user()->id)->find($request->id);
         $books->item_name   = $request->item_name;
         $books->item_number = $request->item_number;
         $books->item_amount = $request->item_amount;
@@ -84,6 +86,7 @@ class BooksController extends Controller
         }
         //Eloquentモデル（登録処理）
         $books = new Book;
+        $books->user_id = Auth::user()->id;
         $books->item_name = $request->item_name;
         $books->item_number = $request->item_number;
         $books->item_amount = $request->item_amount;
